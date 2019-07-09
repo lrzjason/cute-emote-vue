@@ -1,7 +1,7 @@
 <template>
   <span>
-    <el-form-item v-for="name in inputNames" :key="name" :label="inputs[name].label">
-      <el-input v-model="inputs[name].value" />
+    <el-form-item :label="inputConfig.label">
+      <el-input v-if="inputConfig.type === 'text'" v-model="value1" @input="update()"/>
     </el-form-item>
   </span>
 </template>
@@ -10,21 +10,32 @@
 export default {
   data () {
     return {
-      inputs: {
-        mock: {
-          label: 'mock label 1',
-          value: null
-        },
-        mock2: {
-          label: 'mock label 2',
-          value: null
-        }
-      }
+      value1: null,
+      value2: null
+    }
+  },
+  methods: {
+    update () {
+      this.$emit('input', this.returnValue)
     }
   },
   computed: {
-    inputNames () {
-      return Object.keys(this.inputs)
+    returnValue () {
+      if (this.inputConfig.type === 'text') {
+        return this.value1
+      }
+      return null
+    }
+  },
+  props: {
+    value: null,
+    inputConfig: {
+      type: Object,
+      default: () => ({
+        name: 'mock',
+        label: 'mock label 1',
+        type: 'text'
+      })
     }
   }
 }

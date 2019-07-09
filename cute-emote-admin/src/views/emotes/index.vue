@@ -1,6 +1,5 @@
 <template>
   <div class="app-container" style="width:1600px; margin:auto;">
-    <dynamic-form />
     <h1>
       Emote Library
     </h1>
@@ -36,7 +35,7 @@
                 <el-col :span="12">
                   <div>Damaku</div>
                   <el-image
-                    style="width: 48px; height: 48px"
+                    style="width: 48px; height: 48px; background-color:black;"
                     :src="scope.row.image_src"
                     :fit="'fill'"
                   />
@@ -93,13 +92,10 @@
 
 <script>
 import { fetchList } from '@/api/emotes'
-import DynamicForm from '@/components/DynamicForm'
+// import DynamicForm from '@/components/DynamicForm'
 // import { fetchList } from '@/api/table'
 
 export default {
-  components: {
-    DynamicForm
-  },
   data () {
     return {
       list: null,
