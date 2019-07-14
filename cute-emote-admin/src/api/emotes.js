@@ -8,7 +8,7 @@ export function fetchList (query) {
   })
 }
 
-export function fetchEmote (id) {
+export function fetchDetail (id) {
   return request({
     url: '/emotes/detail',
     method: 'get',
@@ -16,7 +16,8 @@ export function fetchEmote (id) {
   })
 }
 
-export function createEmote (data) {
+export function createItem (data) {
+  console.log('createItem', data)
   return request({
     url: '/emotes/create',
     method: 'post',
@@ -24,7 +25,8 @@ export function createEmote (data) {
   })
 }
 
-export function updateEmote (data) {
+export function updateItem (data) {
+  console.log('updateItem', data)
   return request({
     url: '/emotes/update',
     method: 'post',
@@ -32,7 +34,7 @@ export function updateEmote (data) {
   })
 }
 
-export function deleteEmote (data) {
+export function deleteItem (data) {
   return request({
     url: '/emotes/delete',
     method: 'delete',

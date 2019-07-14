@@ -1,5 +1,14 @@
 <template>
   <div class="app-container" style="width:1600px; margin:auto;">
+    <dialog-form
+      ref="actionForm"
+      :title="actionTitle"
+      :data="data"
+      :inputConfigs="inputConfigs"
+      :confirmLabel="confirmLabel"
+      :submitStyle="submitStyle"
+      @submit="submit"
+    />
     <h1>
       Emote Library
     </h1>
@@ -45,8 +54,8 @@
           </el-table-column>
           <el-table-column label="Action" width="180">
             <template slot-scope="scope">
-              <el-button type="primary" icon="el-icon-edit" alt="Update" circle @click="updateItem(scope.row)" />
-              <el-button type="danger" icon="el-icon-delete" alt="Delete" circle @click="deleteItem(scope.row)" />
+              <el-button type="primary" icon="el-icon-edit" alt="Update" circle @click="onUpdateItem(scope.row)" />
+              <el-button type="danger" icon="el-icon-delete" alt="Delete" circle @click="onDeleteItem(scope.row)" />
             </template>
           </el-table-column>
         </el-table>
@@ -56,7 +65,7 @@
           <div slot="header" class="clearfix">
             <span class="">Action</span>
           </div>
-          <el-button type="success" @click="addItem"> Add </el-button>
+          <el-button type="success" @click="onCreateItem"> Add </el-button>
         </el-card>
         <el-divider />
         <el-card class="box-card">
@@ -91,13 +100,31 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/emotes'
-// import DynamicForm from '@/components/DynamicForm'
+import formConfigs from './formConfigs'
+import { fetchList, createItem, updateItem, deleteItem } from '@/api/emotes'
+import DialogForm from '@/components/DynamicForm/DialogForm'
 // import { fetchList } from '@/api/table'
 
 export default {
+  mounted () {
+    // console.log('inputConfigs', this.inputConfigs)
+  },
+  components: {
+    DialogForm
+  },
   data () {
     return {
+      action: 'createItem', // action should be a function name that imported from api
+      createItem: createItem,
+      updateItem: updateItem,
+      deleteItem: deleteItem,
+      data: {},
+      actionTitle: 'Action Title',
+      confirmLabel: 'Confim',
+      submitStyle: 'primary',
+      configs: null,
+      formConfigs: formConfigs,
+      inputConfigs: {},
       list: null,
       listLoading: true,
       form: {
@@ -142,14 +169,66 @@ export default {
     this.fetchData()
   },
   methods: {
-    addItem () {
-      console.log('add item')
+    handleClose (done) {
+      // this.$confirm('Are you sure to close this dialog?')
+      //   .then(_ => {
+      //     done()
+      //   })
+      //   .catch(_ => {})
+      done()
     },
-    updateItem (row) {
+    generateDataObj (row) {
+      if (row) {
+        return Object.assign({}, row)
+      }
+      // default value on create
+      return {
+        class_type: 'ce-chat'
+      }
+    },
+    generateConfigs (disabled) {
+      let configs = Object.assign({}, this.formConfigs)
+      Object.keys(configs).forEach(configName => {
+        configs[configName].type.disabled = disabled
+      })
+      return configs
+    },
+    onCreateItem () {
+      console.log('create item')
+      this.data = this.generateDataObj()
+      this.action = 'createItem'
+      this.actionTitle = 'Add Emote'
+      let disabled = false
+      this.inputConfigs = this.generateConfigs(disabled)
+      this.$refs.actionForm.open()
+    },
+    onUpdateItem (row) {
       console.log('update item', row)
+      this.data = this.generateDataObj(row)
+      this.action = 'updateItem'
+      this.actionTitle = 'Update Emote'
+      let disabled = false
+      this.inputConfigs = this.generateConfigs(disabled)
+      this.$refs.actionForm.open()
     },
-    deleteItem (row) {
+    onDeleteItem (row) {
       console.log('delete item', row)
+      this.data = this.generateDataObj(row)
+      this.action = 'deleteItem'
+      this.actionTitle = 'Delete Emote'
+      let disabled = true
+      this.inputConfigs = this.generateConfigs(disabled)
+      this.confirmLabel = 'Delete'
+      this.submitStyle = 'danger'
+      this.$refs.actionForm.open()
+    },
+    submit (data) {
+      console.log('action', this.action)
+      console.log('data', data)
+      this[this.action](data).then(response => {
+        console.log('response', response)
+        this.fetchData()
+      })
     },
     fetchData () {
       this.listLoading = true
