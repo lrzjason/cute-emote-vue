@@ -101,7 +101,7 @@
 
 <script>
 import formConfigs from './formConfigs'
-import { fetchList, createItem, updateItem, deleteItem } from '@/api/emotes'
+import { fetchList, createItem, updateItem, deleteItem } from '@/api/emote'
 import DialogForm from '@/components/DynamicForm/DialogForm'
 // import { fetchList } from '@/api/table'
 

@@ -31,15 +31,29 @@ export const constantRoutes = [{
   }]
 },
 {
-  path: '/emotes',
+  path: '/emote',
   component: Layout,
-  redirect: '/emotes/library',
+  redirect: '/emote/library',
   children: [{
     path: 'library',
     name: 'Emotes Library',
-    component: () => import('@/views/emotes/index'),
+    component: () => import('@/views/emote/index'),
     meta: {
       title: 'Emotes',
+      icon: 'table'
+    }
+  }]
+},
+{
+  path: '/user',
+  component: Layout,
+  redirect: '/user/index',
+  children: [{
+    path: 'index',
+    name: 'User Management',
+    component: () => import('@/views/user/index'),
+    meta: {
+      title: 'Users',
       icon: 'table'
     }
   }]
@@ -57,6 +71,11 @@ export const constantRoutes = [{
       icon: 'example'
     }
   }]
+},
+{
+  path: '/home',
+  component: () => import('@/views/home/index'),
+  hidden: true
 },
 // {
 //   path: '/example',

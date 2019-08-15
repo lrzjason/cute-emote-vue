@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList (query) {
   return request({
-    url: '/emotes/list',
+    url: '/emote/list',
     method: 'get',
     params: query
   })
@@ -10,7 +10,7 @@ export function fetchList (query) {
 
 export function fetchDetail (id) {
   return request({
-    url: '/emotes/detail',
+    url: '/emote/detail',
     method: 'get',
     params: { id }
   })
@@ -19,7 +19,7 @@ export function fetchDetail (id) {
 export function createItem (data) {
   console.log('createItem', data)
   return request({
-    url: '/emotes/create',
+    url: '/emote/create',
     method: 'post',
     data
   })
@@ -28,7 +28,7 @@ export function createItem (data) {
 export function updateItem (data) {
   console.log('updateItem', data)
   return request({
-    url: '/emotes/update',
+    url: '/emote/update',
     method: 'post',
     data
   })
@@ -36,7 +36,7 @@ export function updateItem (data) {
 
 export function deleteItem (data) {
   return request({
-    url: '/emotes/delete',
+    url: '/emote/delete',
     method: 'delete',
     data
   })
